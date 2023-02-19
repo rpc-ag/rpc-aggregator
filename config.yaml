@@ -1,0 +1,21 @@
+webserver:
+  addr: ":8080"
+  read_timeout: 30s
+
+balancer:
+  total_timeout: 60s
+  node_timeout: 2s
+
+nodes:
+  - name: ankr-1
+    chain: solana
+    provider: ankr
+    endpoint: "https://rpc.ankr.com/solana/<YOUR-API-KEY>"
+    protocol: "https"
+    weight: 1
+  - name: nodereal-1
+    chain: solana
+    provider: nodereal
+    endpoint: "https://open-platform.nodereal.io/<YOUR-API-KEY>/solana/"
+    protocol: "https"
+    weight: 1
