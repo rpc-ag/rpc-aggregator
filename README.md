@@ -37,7 +37,7 @@ flowchart LR
 - Build an uptime page and Grafana dashboards for transparency and accountability.
 - Show fastest & most available node providers
 
-### Phase 4: Be home page of blockchain infra 
+### Phase 4: Become home page of blockchain infrastructure 
 - Yes.
 
 With this roadmap, we aim to add a robust monitoring and performance tracking system to the RPC proxy, along with a
