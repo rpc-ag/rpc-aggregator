@@ -21,7 +21,16 @@ flowchart LR
     Balancer --> ASN[Provider N]
 ```
 
+## Short-Term TODO
+- [ ] Implement prometheus metrics & endpoint
+- [ ] Implement a healthcheck scheduler to add the provider(node) back when they are functioning properly
+- [ ] Detect when a node is behind, remove it and watch closely again
+- [ ] Implement an API lists all nodes (except their API keys) their performance and a simple uptime
+
+
 ## Roadmap
+
+
 ### Phase 1: Prometheus Exporter and Grafana Dashboards
 - Build a Prometheus exporter that exposes the collected metrics in a format that can be scraped by Prometheus.
 - Create a set of Grafana dashboards that visualize the performance metrics for the RPC proxy and its providers.
