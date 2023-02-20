@@ -82,7 +82,18 @@ func (s *WebServer) NotFound(ctx *fasthttp.RequestCtx) {
 		return
 	}
 	if node, ok := next.(*proxy.Node); ok {
-		node.ServeHTTP(ctx)
+		err := node.ServeHTTP(ctx)
+		if err != nil {
+			if err == fasthttp.ErrTimeout {
+				node.SetHealthy(false) //todo: add it to queue to do healthcheck periodically
+				s.NotFound(ctx)
+				return
+			} else {
+				ctx.SetStatusCode(fasthttp.StatusBadGateway)
+				s.logger.Error("failed", zap.Error(err))
+				return
+			}
+		}
 		//ctx.SetBody([]byte(fmt.Sprintf("upstream %s will be called", node.Endpoint)))
 	} else {
 		ctx.SetBody([]byte("invalid upstream"))

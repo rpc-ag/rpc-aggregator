@@ -1,7 +1,6 @@
 package proxy
 
 import (
-	"fmt"
 	"sync/atomic"
 	"time"
 
@@ -21,14 +20,17 @@ type Node struct {
 	totalRequest uint64
 }
 
-func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) {
-	ctx.Request.SetRequestURI(n.Endpoint)
+func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) error {
+	r := fasthttp.AcquireRequest()
+	ctx.Request.CopyTo(r)
+	r.SetRequestURI(n.Endpoint)
+	r.SetTimeout(time.Second * 2)
 	resp := fasthttp.AcquireResponse()
 	defer fasthttp.ReleaseResponse(resp) // <- do not forget to release
-	err := fasthttp.Do(&ctx.Request, resp)
+	err := fasthttp.Do(r, resp)
+
 	if err != nil {
-		fmt.Println(err)
-		return
+		return err
 	}
 
 	ctx.Response.Header.SetStatusCode(resp.StatusCode())
@@ -38,9 +40,10 @@ func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) {
 
 	err = resp.BodyWriteTo(ctx.Response.BodyWriter())
 	if err != nil {
-		fmt.Println(err)
-		return
+		return err
 	}
+
+	return nil
 }
 
 func NewNode(name, chain, provider, endpoint, protocol string) (*Node, error) {
@@ -77,4 +80,8 @@ func (n *Node) NodeID() string {
 
 func (n *Node) ProviderName() string {
 	return n.Provider
+}
+
+func (n *Node) SetHealthy(healthy bool) {
+	n.isHealthy = healthy
 }
