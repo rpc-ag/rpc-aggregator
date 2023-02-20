@@ -22,9 +22,10 @@ flowchart LR
 ```
 
 ## Short-Term TODO
-- [ ] Implement prometheus metrics & endpoint
+- [ ] Implement rate limiting
 - [ ] Implement a healthcheck scheduler to add the provider(node) back when they are functioning properly
 - [ ] Detect when a node is behind, remove it and watch closely again
+- [ ] Implement prometheus metrics & endpoint
 - [ ] Implement an API lists all nodes (except their API keys) their performance and a simple uptime
 
 
