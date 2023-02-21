@@ -25,7 +25,7 @@ flowchart LR
 ```
 
 ## Short-Term TODO
-
+- [ ] create issues for tod-do in readme and remove them :)
 - [ ] Implement rate limiting
 - [ ] Implement CORS Policy and api keys
 - [ ] Implement a ping metric fetcher from all providers
