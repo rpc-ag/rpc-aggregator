@@ -64,7 +64,7 @@ accountability for blockchain world.
 
 ## Developers
 
-rpc.ag provides free rpc endpoints for developers and for projects in super early stage. Please reach us at info@rpc.ag
+rpc.ag provides free rpc endpoints for developers and for projects at their super early stage. Please reach us at info@rpc.ag
 
 ## Providers
 
