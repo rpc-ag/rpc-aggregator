@@ -27,6 +27,7 @@ func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) error {
 	r.SetTimeout(time.Second * 2)
 	resp := fasthttp.AcquireResponse()
 	defer fasthttp.ReleaseResponse(resp) // <- do not forget to release
+	defer fasthttp.ReleaseRequest(r)
 	err := fasthttp.Do(r, resp)
 
 	if err != nil {
@@ -84,4 +85,9 @@ func (n *Node) ProviderName() string {
 
 func (n *Node) SetHealthy(healthy bool) {
 	n.isHealthy = healthy
+}
+
+func (n *Node) HealthCheck() {
+	//todo: do health check here, set SetHealthy(true) if pass
+	n.SetHealthy(true)
 }

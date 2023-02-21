@@ -43,6 +43,8 @@ func main() {
 		}
 	}()
 
+	go server.StartHealthChecker()
+
 	// Wait for interrupt signal
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, syscall.SIGTERM)

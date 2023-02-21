@@ -90,7 +90,7 @@ func (s *WebServer) NotFound(ctx *fasthttp.RequestCtx) {
 				return
 			} else {
 				ctx.SetStatusCode(fasthttp.StatusBadGateway)
-				s.logger.Error("failed", zap.Error(err))
+				node.SetHealthy(false)
 				return
 			}
 		}
@@ -109,4 +109,16 @@ func (s *WebServer) Run() error {
 // Close sends `stop` signal to fasthttp server
 func (s *WebServer) Close() error {
 	return s.server.Shutdown()
+}
+
+func (s *WebServer) StartHealthChecker() {
+	for {
+		<-time.After(time.Second * 10) //todo: move this to config
+		for _, n := range s.upstream.Balancer.UpstreamPool {
+			if !n.IsHealthy() { //do check only if it is not healthy
+				n.(*proxy.Node).HealthCheck()
+				s.logger.Info("node is back", zap.String("node-id", n.NodeID()))
+			}
+		}
+	}
 }
