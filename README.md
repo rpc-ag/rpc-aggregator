@@ -23,6 +23,7 @@ flowchart LR
 
 ## Short-Term TODO
 - [ ] Implement rate limiting
+- [ ] Implement a ping metric fetcher from all providers
 - [ ] Implement a healthcheck scheduler to add the provider(node) back when they are functioning properly
 - [ ] Detect when a node is behind, remove it and watch closely again
 - [ ] Implement prometheus metrics & endpoint
@@ -30,7 +31,6 @@ flowchart LR
 
 
 ## Roadmap
-
 
 ### Phase 1: Prometheus Exporter and Grafana Dashboards
 - Build a Prometheus exporter that exposes the collected metrics in a format that can be scraped by Prometheus.
@@ -54,6 +54,13 @@ With this roadmap, we aim to add a robust monitoring and performance tracking sy
 Prometheus exporter, Grafana dashboards, an uptime page, and a public page. These features will provide greater
 visibility into the health and performance of the RPC proxy and its providers, and promote transparency and
 accountability for blockchain world.
+
+## Developers
+rpc.ag provides free rpc endpoints for developers and for projects in super early stage. Please reach us at info@rpc.ag
+
+## Providers
+If you are a node provider and want to support developer community and want to be mentioned here, reach us info@rpc.ag
+
 
 ## Contributing
 
