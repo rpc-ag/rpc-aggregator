@@ -70,9 +70,18 @@ info@rpc.ag
 
 ## Providers
 
-If you are a node provider and want to support developer community and want to be mentioned here, reach us at info@rpc.ag
+If you are a node provider and want to support developer community and want to be mentioned here, reach us at
+info@rpc.ag
 
 ## Contributing
 
 If you would like to contribute to the RPC proxy with load balancing, please fork the repository and create a pull
-request with your changes. Be sure to include unit tests and adhere to the project's coding style. 
+request with your changes. Be sure to include unit tests and adhere to the project's coding style.
+
+> IF, the project get support (grant from any blockchain) to cover some server expenses and a bit more, we will share it
+> to developers who contribute to rpc.ag at any level (proxy, doc, monitoring, etc) we will also open some grants for
+> huge tasks and/or issues 
+
+Total grant so far: $0 
+
+
