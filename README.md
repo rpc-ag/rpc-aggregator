@@ -27,6 +27,7 @@ flowchart LR
 ## Short-Term TODO
 
 - [ ] Implement rate limiting
+- [ ] Implement CORS Policy and api keys
 - [ ] Implement a ping metric fetcher from all providers
 - [ ] Implement a healthcheck scheduler to add the provider(node) back when they are functioning properly
 - [ ] Detect when a node is behind, remove it and watch closely again
@@ -64,14 +65,14 @@ accountability for blockchain world.
 
 ## Developers
 
-rpc.ag provides free rpc endpoints for developers and for projects at their super early stage. Please reach us at info@rpc.ag
+rpc.ag provides free rpc endpoints for developers and for projects at their super early stage. Please reach us at
+info@rpc.ag
 
 ## Providers
 
-If you are a node provider and want to support developer community and want to be mentioned here, reach us info@rpc.ag
+If you are a node provider and want to support developer community and want to be mentioned here, reach us at info@rpc.ag
 
 ## Contributing
 
 If you would like to contribute to the RPC proxy with load balancing, please fork the repository and create a pull
-request with your changes. Be sure to include unit tests and adhere to the project's coding style.
-
+request with your changes. Be sure to include unit tests and adhere to the project's coding style. 
