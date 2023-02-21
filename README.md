@@ -92,6 +92,6 @@ request with your changes. Be sure to include unit tests and adhere to the proje
 > to developers who contribute to rpc.ag at any level (proxy, doc, monitoring, etc) we will also open some grants for
 > huge tasks and/or issues
 
-Total grant so far: $0 
+Total grant so far: $0  
 Sol Wallet to support, donate & track `rpcroe9QQug5tfnG5hvZRCv65R27n3JdFpWuxhBkekH`
 
