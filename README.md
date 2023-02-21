@@ -25,6 +25,7 @@ flowchart LR
 ```
 
 ## Short-Term TODO
+
 - [ ] create issues for tod-do in readme and remove them :)
 - [ ] Implement rate limiting
 - [ ] Implement CORS Policy and api keys
@@ -36,23 +37,32 @@ flowchart LR
 
 ## Roadmap
 
-### Phase 1: Prometheus Exporter and Grafana Dashboards
+### Phase 0: Release v0
+
+- Publish an endpoint for developers and distribute api keys for every project attends
+  to [grizzlython](https://solana.com/grizzlython) with ability of;
+- Api key auth & CORS
+- Rate limiting
+
+### Phase 1: Public Page
+
+- Build a public page on [rpc.ag](rpc.ag) that showcases the RPC proxy and its features.
+- Include information on how to use the RPC proxy.
+- Build an uptime page for transparency and accountability.
+- Show fastest & most available node providers with uptime history
+- Show average ping time with ability of filtering by provider and region 
+
+### Phase 2: Prometheus Exporter and Grafana Dashboards
 
 - Build a Prometheus exporter that exposes the collected metrics in a format that can be scraped by Prometheus.
 - Create a set of Grafana dashboards that visualize the performance metrics for the RPC proxy and its providers.
 
-### Phase 2: Uptime Page
+### Phase 3: Uptime Page
 
 - Develop an uptime page that displays the current status of the RPC proxy and the providers.
 - Integrate the monitoring system with the uptime page to display real-time health and performance metrics.
 - Allow users to subscribe to alerts for downtime or performance issues.
 
-### Phase 3: Public Page
-
-- Build a public page on [rpc.ag](rpc.ag) that showcases the RPC proxy and its features.
-- Include information on how to use the RPC proxy.
-- Build an uptime page and Grafana dashboards for transparency and accountability.
-- Show fastest & most available node providers
 
 ### Phase 4: Become home page of blockchain infrastructure
 
@@ -80,7 +90,7 @@ request with your changes. Be sure to include unit tests and adhere to the proje
 
 > IF, the project get support (grant from any blockchain) to cover some server expenses and a bit more, we will share it
 > to developers who contribute to rpc.ag at any level (proxy, doc, monitoring, etc) we will also open some grants for
-> huge tasks and/or issues 
+> huge tasks and/or issues
 
 Total grant so far: $0 
 
