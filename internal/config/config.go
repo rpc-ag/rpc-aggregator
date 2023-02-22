@@ -24,11 +24,17 @@ type Balancer struct {
 }
 
 type Node struct {
-	Name     string `mapstructure:"name"`
-	Chain    string `mapstructure:"chain"`
-	Provider string `mapstructure:"provider"`
-	Endpoint string `mapstructure:"endpoint"`
-	Protocol string `mapstructure:"protocol"`
+	Name      string       `mapstructure:"name"`
+	Chain     string       `mapstructure:"chain"`
+	Provider  string       `mapstructure:"provider"`
+	Endpoint  string       `mapstructure:"endpoint"`
+	Protocol  string       `mapstructure:"protocol"`
+	RateLimit []*RateLimit `mapstructure:"rate_limit"`
+}
+
+type RateLimit struct {
+	TimeWindow time.Duration `mapstructure:"time_window"`
+	Limit      uint64        `mapstructure:"limit"`
 }
 
 func Read(file string) (*Config, error) {

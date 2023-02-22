@@ -13,6 +13,11 @@ nodes:
     endpoint: "https://rpc.ankr.com/solana/<YOUR-API-KEY>"
     protocol: "https"
     weight: 1
+    rate_limit:
+      - time_window: 30d
+        limit: 40000
+      - time_window: 1s
+        limit: 10
   - name: nodereal-1
     chain: solana
     provider: nodereal
