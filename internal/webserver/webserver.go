@@ -65,6 +65,11 @@ func New(config *config.Config, auth *config.Auth, logger *zap.Logger) (*WebServ
 		upstream: &upstream.Upstream{Balancer: b},
 	}
 	ws.router.NotFound = ws.NotFound
+
+	//web service routers
+	ws.router.GET("/node_list", ws.NodeList)
+
+	//catch all routers
 	ws.router.OPTIONS("/{api_key}", ws.Cors)
 	ws.router.ANY("/{api_key}", ws.Proxy)
 
