@@ -19,9 +19,10 @@ flowchart LR
     subgraph RPC Proxy
       RPCProxy(Handler) --> Balancer
     end
-    Balancer --> AS1[Provider 1] 
-    Balancer -->  AS2[Provider 2] 
-    Balancer --> ASN[Provider N]
+    Balancer ---->|275ms| AS1[Provider 1] 
+    Balancer -->|100ms| AS2[Provider 2] 
+    Balancer --->|170ms| ASN[Provider N]
+
 ```
 
 ## Short-Term TODO
