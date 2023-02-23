@@ -1,6 +1,6 @@
 # RPC Proxy
 
-Welcome to rpc.ag, the blockchain node provider proxy tool for DApps! It simplifies node provider integration
+Welcome to rpc.ag, the blockchain proxy tool for DApps! It simplifies node provider integration
 by balancing requests across multiple providers through a single endpoint. rpc.ag also enhances observability, improving
 the overall management and efficiency of your DApp infrastructure. Empower the community with better control and
 observability by using rpc.ag as the homepage of DApp blockchain infrastructure. Big brothers started watching node
