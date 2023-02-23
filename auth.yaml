@@ -3,6 +3,6 @@ api_keys:
     rate_limit:
       per: 1m
       rate: 10
-    allowed_hosts:
+    allowed_origins:
       - http://localhost:8080
       - http://rpc.ag

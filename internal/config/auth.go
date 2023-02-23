@@ -33,7 +33,7 @@ func (a *Auth) Auth(key string) (apikey *APIKey, found bool) {
 type APIKey struct {
 	Key          string    `mapstructure:"key"`
 	RateLimit    RateLimit `mapstructure:"rate_limit"`
-	AllowedHosts []string  `mapstructure:"allowed_hosts"`
+	AllowedHosts []string  `mapstructure:"allowed_origins"`
 	//todo: create rate limiter instances here
 	RateLimiter *rate.Limiter
 }
