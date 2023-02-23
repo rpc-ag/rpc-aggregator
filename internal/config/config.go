@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Config main config struct
 type Config struct {
 	LoadedFile string
 	Webserver  *Webserver `mapstructure:"webserver"`
@@ -13,33 +14,45 @@ type Config struct {
 	Nodes      []*Node    `mapstructure:"nodes"`
 }
 
+// Webserver main Webserver config struct
 type Webserver struct {
 	Addr        string        `mapstructure:"addr"`
 	ReadTimeout time.Duration `mapstructure:"read_timeout"`
 }
 
+// Balancer main Balancer config struct
 type Balancer struct {
 	TotalTimeout time.Duration `mapstructure:"total_timeout"`
 	NodeTimeOut  time.Duration `mapstructure:"node_timeout"`
 }
 
+// Node main Node config struct
 type Node struct {
-	Name     string `mapstructure:"name"`
-	Chain    string `mapstructure:"chain"`
-	Provider string `mapstructure:"provider"`
-	Endpoint string `mapstructure:"endpoint"`
-	Protocol string `mapstructure:"protocol"`
+	Name      string    `mapstructure:"name"`
+	Chain     string    `mapstructure:"chain"`
+	Provider  string    `mapstructure:"provider"`
+	Endpoint  string    `mapstructure:"endpoint"`
+	Protocol  string    `mapstructure:"protocol"`
+	RateLimit RateLimit `mapstructure:"rate_limit"`
 }
 
-func Read(file string) (*Config, error) {
-	viper.SetConfigFile(file)
-	if err := viper.ReadInConfig(); err != nil {
+// RateLimit main RateLimit config struct
+type RateLimit struct {
+	Per  time.Duration `mapstructure:"per"`
+	Rate int           `mapstructure:"rate"`
+}
+
+// ReadConfig read config from a yaml file
+func ReadConfig(file string) (*Config, error) {
+	v := viper.New()
+	v.SetConfigFile(file)
+	if err := v.ReadInConfig(); err != nil {
 		return nil, err
 	}
 	var cfg Config
-	if err := viper.Unmarshal(&cfg); err != nil {
+	if err := v.Unmarshal(&cfg); err != nil {
 		return nil, err
 	}
-	cfg.LoadedFile = viper.ConfigFileUsed()
+	cfg.LoadedFile = v.ConfigFileUsed()
 	return &cfg, nil
 }

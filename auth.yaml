@@ -1,0 +1,8 @@
+api_keys:
+  - key: 5cb686db33215c303fcc289e60eeffa2
+    rate_limit:
+      per: 1m
+      rate: 10
+    allowed_origins:
+      - http://localhost:8080
+      - http://rpc.ag

@@ -5,6 +5,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// NewRecover recover middleware, prevent crashing when a handler paniced
 func NewRecover(logger *zap.Logger) Middleware {
 	return func(next fasthttp.RequestHandler) fasthttp.RequestHandler {
 		return func(ctx *fasthttp.RequestCtx) {

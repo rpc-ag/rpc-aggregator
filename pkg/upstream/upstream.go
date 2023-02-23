@@ -1,7 +1,8 @@
-package proxy
+package upstream
 
 import "github.com/tufanbarisyildirim/balancer"
 
+// Upstream main upstream contains multiple upstreams in a balancer
 type Upstream struct {
 	Balancer *balancer.Balancer
 }
