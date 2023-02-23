@@ -16,6 +16,7 @@ import (
 type WebServer struct {
 	logger   *zap.Logger
 	config   *config.Config
+	auth     *config.Auth
 	server   *fasthttp.Server
 	router   *router.Router
 	upstream *proxy.Upstream
@@ -29,7 +30,7 @@ func (l loggerAdapter) Printf(format string, args ...interface{}) {
 	l.logger.Info(fmt.Sprintf(format, args...))
 }
 
-func New(config *config.Config, logger *zap.Logger) (*WebServer, error) {
+func New(config *config.Config, auth *config.Auth, logger *zap.Logger) (*WebServer, error) {
 	server := new(fasthttp.Server)
 	applyFastHTTPConfig(server, config)
 	server.Logger = loggerAdapter{logger: logger}
@@ -56,11 +57,14 @@ func New(config *config.Config, logger *zap.Logger) (*WebServer, error) {
 	ws := &WebServer{
 		logger:   logger,
 		config:   config,
+		auth:     auth,
 		server:   server,
 		router:   r,
 		upstream: &proxy.Upstream{Balancer: b},
 	}
 	ws.router.NotFound = ws.NotFound
+	ws.router.OPTIONS("/{api_key}", ws.Cors)
+	ws.router.ANY("/{api_key}", ws.Serve)
 
 	return ws, nil
 }
@@ -69,36 +73,14 @@ func applyFastHTTPConfig(server *fasthttp.Server, config *config.Config) {
 	server.ReadTimeout = config.Webserver.ReadTimeout
 	server.NoDefaultServerHeader = true
 	if server.ReadTimeout == 0 {
+		//TODO: move this to config
 		server.ReadTimeout = 5 * time.Second
 	}
 }
 
 // NotFound url handler, can't we handle all here?
 func (s *WebServer) NotFound(ctx *fasthttp.RequestCtx) {
-	ctx.SetStatusCode(fasthttp.StatusOK)
-	next := s.upstream.Balancer.Next("a")
-	if next == nil {
-		ctx.SetBody([]byte("no upstream found"))
-		return
-	}
-	if node, ok := next.(*proxy.Node); ok {
-		err := node.ServeHTTP(ctx)
-		if err != nil {
-			if err == fasthttp.ErrTimeout {
-				node.SetHealthy(false) //todo: add it to queue to do healthcheck periodically
-				s.NotFound(ctx)
-				return
-			} else {
-				ctx.SetStatusCode(fasthttp.StatusBadGateway)
-				node.SetHealthy(false)
-				return
-			}
-		}
-		//ctx.SetBody([]byte(fmt.Sprintf("upstream %s will be called", node.Endpoint)))
-	} else {
-		ctx.SetBody([]byte("invalid upstream"))
-	}
-
+	ctx.SetStatusCode(fasthttp.StatusNotFound)
 }
 
 // Run starts server

@@ -37,15 +37,16 @@ type RateLimit struct {
 	Limit      uint64        `mapstructure:"limit"`
 }
 
-func Read(file string) (*Config, error) {
-	viper.SetConfigFile(file)
-	if err := viper.ReadInConfig(); err != nil {
+func ReadConfig(file string) (*Config, error) {
+	v := viper.New()
+	v.SetConfigFile(file)
+	if err := v.ReadInConfig(); err != nil {
 		return nil, err
 	}
 	var cfg Config
-	if err := viper.Unmarshal(&cfg); err != nil {
+	if err := v.Unmarshal(&cfg); err != nil {
 		return nil, err
 	}
-	cfg.LoadedFile = viper.ConfigFileUsed()
+	cfg.LoadedFile = v.ConfigFileUsed()
 	return &cfg, nil
 }
