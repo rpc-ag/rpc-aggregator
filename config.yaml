@@ -14,7 +14,7 @@ nodes:
     protocol: "https"
     weight: 1
     rate_limit:
-      - time_window: 30d
+      - time_window: 720h
         limit: 40000
       - time_window: 1s
         limit: 10

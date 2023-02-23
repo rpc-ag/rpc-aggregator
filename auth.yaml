@@ -1,7 +1,7 @@
 api_keys:
   - key: 5cb686db33215c303fcc289e60eeffa2
     rate_limit:
-      - time_window: 30d
+      - time_window: 720h
         limit: 50000
       - time_window: 1s
         limit: 10

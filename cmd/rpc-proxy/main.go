@@ -21,7 +21,9 @@ func main() {
 	defer logger.Sync()
 
 	var configFilePath string
+	var authFilePath string
 	flag.StringVar(&configFilePath, "config", "./config.yaml", "config file to load")
+	flag.StringVar(&authFilePath, "auth", "./auth.yaml", "auth file to load")
 	flag.Parse()
 	conf, err := config.ReadConfig(configFilePath)
 	if err != nil {
@@ -29,7 +31,13 @@ func main() {
 	}
 	logger.Info("config loaded", zap.Any("conf", conf))
 
-	server, err := webserver.New(conf, logger)
+	auth, err := config.ReadAuth(authFilePath)
+	if err != nil {
+		logger.Panic("failed to load auth", zap.Error(err))
+	}
+	logger.Info("auth loaded")
+
+	server, err := webserver.New(conf, auth, logger)
 	if err != nil {
 		logger.Panic("failed to start webserver", zap.Error(err))
 	}
