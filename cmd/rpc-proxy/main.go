@@ -23,7 +23,7 @@ func main() {
 	var configFilePath string
 	flag.StringVar(&configFilePath, "config", "./config.yaml", "config file to load")
 	flag.Parse()
-	conf, err := config.Read(configFilePath)
+	conf, err := config.ReadConfig(configFilePath)
 	if err != nil {
 		logger.Panic("failed to load config", zap.Error(err))
 	}
