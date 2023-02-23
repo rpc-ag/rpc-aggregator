@@ -28,8 +28,8 @@ flowchart LR
 ## Short-Term TODO
 
 - [ ] create issues for tod-do in readme and remove them :)
-- [ ] Implement rate limiting
-- [ ] Implement CORS Policy and api keys
+- [x] Implement rate limiting
+- [x] Implement CORS Policy and api keys
 - [ ] Implement a ping metric fetcher from all providers
 - [ ] Implement a healthcheck scheduler to add the provider(node) back when they are functioning properly
 - [ ] Detect when a node is behind, remove it and watch closely again
