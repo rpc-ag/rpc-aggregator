@@ -31,14 +31,14 @@ func (s *WebServer) NodeList(ctx *fasthttp.RequestCtx) {
 			TotalRequest: node.TotalRequest(),
 		})
 	}
-	nodesJson, err := json.Marshal(nodes)
+	nodesJSON, err := json.Marshal(nodes)
 	if err != nil {
 		s.logger.Error("failed serializing nodes", zap.Error(err))
 		return
 	}
 	ctx.SetStatusCode(fasthttp.StatusOK)
 	ctx.Response.Header.Set("Content-Type", "application/json")
-	_, err = ctx.Write(nodesJson)
+	_, err = ctx.Write(nodesJSON)
 	if err != nil {
 		s.logger.Error("failed writing node list response", zap.Error(err))
 		return
