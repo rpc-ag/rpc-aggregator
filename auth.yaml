@@ -6,5 +6,5 @@ api_keys:
       - time_window: 1s
         limit: 10
     allowed_hosts:
-      - rpc.ag
-      - localhost
+      - http://localhost:8080
+      - http://rpc.ag
