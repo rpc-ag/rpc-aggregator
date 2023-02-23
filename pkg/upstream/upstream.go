@@ -1,4 +1,4 @@
-package proxy
+package upstream
 
 import "github.com/tufanbarisyildirim/balancer"
 

@@ -1,11 +1,13 @@
-package proxy
+package upstream
 
 import (
 	"sync/atomic"
 	"time"
 
+	"github.com/rpc-ag/rpc-proxy/internal/config"
 	"github.com/tufanbarisyildirim/balancer"
 	"github.com/valyala/fasthttp"
+	"golang.org/x/time/rate"
 )
 
 var _ balancer.Node = (*Node)(nil)
@@ -19,6 +21,7 @@ type Node struct {
 	Protocol     string `json:"protocol"`
 	isHealthy    bool
 	totalRequest uint64
+	RateLimiter  *rate.Limiter
 }
 
 // ServeHTTP server http (actual proxy) through this node
@@ -50,16 +53,19 @@ func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) error {
 }
 
 // NewNode create new node
-func NewNode(name, chain, provider, endpoint, protocol string) (*Node, error) {
-	return &Node{
-		Name:         name,
-		Chain:        chain,
-		Provider:     provider,
-		Endpoint:     endpoint,
-		Protocol:     protocol,
+func NewNode(node *config.Node) (*Node, error) {
+	n := &Node{
+		Name:         node.Name,
+		Chain:        node.Chain,
+		Provider:     node.Provider,
+		Endpoint:     node.Endpoint,
+		Protocol:     node.Protocol,
 		isHealthy:    true,
 		totalRequest: 0,
-	}, nil
+		RateLimiter:  rate.NewLimiter(rate.Every(node.RateLimit.Per), node.RateLimit.Rate), //  ratelimit.New(node.RateLimit.Rate, ratelimit.Per(node.RateLimit.Per)),
+	}
+
+	return n, nil
 }
 
 // IsHealthy check if node can accept request

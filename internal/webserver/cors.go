@@ -9,17 +9,10 @@ import (
 // Cors respond an OPTIONS request (main auth)
 func (s *WebServer) Cors(ctx *fasthttp.RequestCtx) {
 	//return 200 with headers
-	k := ctx.UserValue("api_key").(string)
-	if k == "" {
+	key, err := s.Auth(ctx)
+	if err != nil {
 		ctx.SetStatusCode(http.StatusForbidden)
-		ctx.Response.Header.Set("X-RCP-Error", "no api key in request")
-		return
-	}
-
-	key, found := s.auth.Auth(k)
-	if !found {
-		ctx.SetStatusCode(http.StatusForbidden)
-		ctx.Response.Header.Set("X-RCP-Error", "api key not found")
+		ctx.Response.Header.Set("X-RCP-Error", err.Error())
 		return
 	}
 

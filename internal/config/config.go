@@ -28,18 +28,18 @@ type Balancer struct {
 
 // Node main Node config struct
 type Node struct {
-	Name      string       `mapstructure:"name"`
-	Chain     string       `mapstructure:"chain"`
-	Provider  string       `mapstructure:"provider"`
-	Endpoint  string       `mapstructure:"endpoint"`
-	Protocol  string       `mapstructure:"protocol"`
-	RateLimit []*RateLimit `mapstructure:"rate_limit"`
+	Name      string    `mapstructure:"name"`
+	Chain     string    `mapstructure:"chain"`
+	Provider  string    `mapstructure:"provider"`
+	Endpoint  string    `mapstructure:"endpoint"`
+	Protocol  string    `mapstructure:"protocol"`
+	RateLimit RateLimit `mapstructure:"rate_limit"`
 }
 
 // RateLimit main RateLimit config struct
 type RateLimit struct {
-	TimeWindow time.Duration `mapstructure:"time_window"`
-	Limit      uint64        `mapstructure:"limit"`
+	Per  time.Duration `mapstructure:"per"`
+	Rate int           `mapstructure:"rate"`
 }
 
 // ReadConfig read config from a yaml file
