@@ -6,6 +6,7 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
+// Cors respond an OPTIONS request (main auth)
 func (s *WebServer) Cors(ctx *fasthttp.RequestCtx) {
 	//return 200 with headers
 	k := ctx.UserValue("api_key").(string)
@@ -32,5 +33,4 @@ func (s *WebServer) Cors(ctx *fasthttp.RequestCtx) {
 
 	ctx.SetStatusCode(http.StatusForbidden)
 	ctx.Response.Header.Set("X-RCP-Error", "host not allowed")
-	return
 }

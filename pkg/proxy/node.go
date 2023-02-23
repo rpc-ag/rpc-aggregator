@@ -10,6 +10,7 @@ import (
 
 var _ balancer.Node = (*Node)(nil)
 
+// Node main node struct
 type Node struct {
 	Name         string `json:"name"`
 	Chain        string `json:"chain"`
@@ -20,6 +21,7 @@ type Node struct {
 	totalRequest uint64
 }
 
+// ServeHTTP server http (actual proxy) through this node
 func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) error {
 	r := fasthttp.AcquireRequest()
 	ctx.Request.CopyTo(r)
@@ -47,6 +49,7 @@ func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) error {
 	return nil
 }
 
+// NewNode create new node
 func NewNode(name, chain, provider, endpoint, protocol string) (*Node, error) {
 	return &Node{
 		Name:         name,
@@ -59,34 +62,42 @@ func NewNode(name, chain, provider, endpoint, protocol string) (*Node, error) {
 	}, nil
 }
 
+// IsHealthy check if node can accept request
 func (n *Node) IsHealthy() bool {
 	return n.isHealthy
 }
 
+// TotalRequest total request done to this node so far
 func (n *Node) TotalRequest() uint64 {
 	return atomic.LoadUint64(&n.totalRequest)
 }
 
+// AverageResponseTime average response time of this node
 func (n *Node) AverageResponseTime() time.Duration {
 	return time.Millisecond * 200
 }
 
+// Load get load on that server
 func (n *Node) Load() int64 {
 	return 0
 }
 
+// NodeID a unique id for that particular node
 func (n *Node) NodeID() string {
 	return n.Name
 }
 
+// ProviderName node provider name
 func (n *Node) ProviderName() string {
 	return n.Provider
 }
 
+// SetHealthy set up/down the node.
 func (n *Node) SetHealthy(healthy bool) {
 	n.isHealthy = healthy
 }
 
+// HealthCheck a dummy healthcheck (it just recovers for now)
 func (n *Node) HealthCheck() {
 	//todo: do health check here, set SetHealthy(true) if pass
 	n.SetHealthy(true)

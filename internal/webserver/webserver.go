@@ -13,6 +13,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// WebServer main web service (handler)
 type WebServer struct {
 	logger   *zap.Logger
 	config   *config.Config
@@ -30,6 +31,7 @@ func (l loggerAdapter) Printf(format string, args ...interface{}) {
 	l.logger.Info(fmt.Sprintf(format, args...))
 }
 
+// New create a new Webserver instance
 func New(config *config.Config, auth *config.Auth, logger *zap.Logger) (*WebServer, error) {
 	server := new(fasthttp.Server)
 	applyFastHTTPConfig(server, config)
@@ -93,6 +95,7 @@ func (s *WebServer) Close() error {
 	return s.server.Shutdown()
 }
 
+// StartHealthChecker starts the health check cron
 func (s *WebServer) StartHealthChecker() {
 	for {
 		<-time.After(time.Second * 10) //todo: move this to config

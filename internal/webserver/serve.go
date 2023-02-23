@@ -6,6 +6,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// Serve process the actual request
 func (s *WebServer) Serve(ctx *fasthttp.RequestCtx) {
 	ctx.SetStatusCode(fasthttp.StatusOK)
 	next := s.upstream.Balancer.Next("a")

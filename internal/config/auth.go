@@ -2,6 +2,7 @@ package config
 
 import "github.com/spf13/viper"
 
+// Auth main auth config structure
 type Auth struct {
 	APIKeys []*APIKey `mapstructure:"api_keys"`
 
@@ -18,11 +19,13 @@ func (a *Auth) reIndexKeys() {
 	}
 }
 
+// Auth main authentication method, checks if key is valid & get api info
 func (a *Auth) Auth(key string) (apikey *APIKey, found bool) {
 	apiKey, found := a.keys[key]
 	return apiKey, found
 }
 
+// APIKey main apikey structure (user)
 type APIKey struct {
 	Key          string      `mapstructure:"key"`
 	RateLimit    []RateLimit `mapstructure:"rate_limit"`
@@ -30,6 +33,7 @@ type APIKey struct {
 	//todo: create rate limiter instances here
 }
 
+// ReadAuth read auth (user) info from a yaml file
 func ReadAuth(file string) (*Auth, error) {
 	v := viper.New()
 	v.SetConfigFile(file)
