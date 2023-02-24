@@ -27,7 +27,6 @@ flowchart LR
 
 ## Short-Term TODO
 
-- [ ] create issues for tod-do in readme and remove them :)
 - [x] Implement rate limiting
 - [x] Implement CORS Policy and api keys
 - [ ] Implement a ping metric fetcher from all providers
@@ -38,20 +37,19 @@ flowchart LR
 
 ## Roadmap
 
-### Phase 0: Release v0
+### Phase 0: Release v0 ⌛️
 
-- Publish an endpoint for developers and distribute api keys for every project attends
-  to [grizzlython](https://solana.com/grizzlython) with ability of;
-- Api key auth & CORS
-- Rate limiting
+- [ ] Distribute api keys for every project attends to [grizzlython](https://solana.com/grizzlython) with ability of;
+- [x] Api key auth & CORS
+- [x] Rate limiting
 
 ### Phase 1: Public Page
 
-- Build a public page on [rpc.ag](rpc.ag) that showcases the RPC Aggregator and its features.
-- Include information on how to use the RPC Aggregator.
-- Build an uptime page for transparency and accountability.
-- Show fastest & most available node providers with uptime history
-- Show average ping time with ability of filtering by provider and region 
+- [ ] Build a public page on [rpc.ag](rpc.ag) that showcases the RPC Aggregator and its features.
+- [ ] Include information on how to use the RPC Aggregator.
+- [ ] Build an uptime page for transparency and accountability.
+- [ ] Show fastest & most available node providers with uptime history
+- [ ] Show average ping time with ability of filtering by provider and region 
 
 ### Phase 2: Prometheus Exporter and Grafana Dashboards
 
