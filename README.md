@@ -20,13 +20,13 @@ flowchart LR
         subgraph fasthttp
          Routing --> Auth(Auth & Cors) 
          Auth --> Balancer
-         Balancer --> Proxy
         end
+         Balancer --> Proxy
     end
-    Proxy -->|TCP - 275ms| AS1[Provider 1] 
-    Proxy -->|TCP - 101ms| AS2[Provider 2] 
-    Proxy -->|TCP - 100ms| AS3[Provider 3] 
-    Proxy -->|TCP - 170ms| ASN[Provider N]
+    Proxy -->|TCP -> 100ms| Upstream1[Provider 1]  
+    Proxy -->|TCP -> 101ms| Upstream2[Provider 2] 
+    Proxy -->|TCP -> 200ms| Upstream3[Provider 3] 
+    Proxy -->|TCP -> 300ms| Upstream4[Provider N]
 ```
 
 if you are curious about details
