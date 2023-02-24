@@ -25,5 +25,5 @@ func (s *WebServer) Cors(ctx *fasthttp.RequestCtx) {
 	}
 
 	ctx.SetStatusCode(http.StatusForbidden)
-	ctx.Response.Header.Set("X-RCP-Error", "host not allowed")
+	ctx.Response.Header.Set("X-RCP-Error", "origin not allowed")
 }
