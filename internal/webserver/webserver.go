@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/fasthttp/router"
-	"github.com/rpc-ag/rpc-proxy/internal/config"
-	"github.com/rpc-ag/rpc-proxy/internal/webserver/middleware"
-	"github.com/rpc-ag/rpc-proxy/pkg/upstream"
+	"github.com/rpc-ag/rpc-aggregator/internal/config"
+	"github.com/rpc-ag/rpc-aggregator/internal/webserver/middleware"
+	"github.com/rpc-ag/rpc-aggregator/pkg/upstream"
 	"github.com/tufanbarisyildirim/balancer"
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"

@@ -1,14 +1,14 @@
 .PHONY: build
 build:
-	go build -o bin/rpc-proxy cmd/rpc-proxy/main.go
+	go build -o bin/rpc-aggregator cmd/rpc-aggregator/main.go
 
 .PHONY: run
 run: build
-	./bin/rpc-proxy --config ./config.yaml
+	./bin/rpc-aggregator --config ./config.yaml
 
 .PHONY: runp
 runp: build
-	./bin/rpc-proxy --config ./_private/solana.yaml
+	./bin/rpc-aggregator --config ./_private/solana.yaml
 
 .PHONY: test
 test:
@@ -24,11 +24,11 @@ check:
 
 .PHONY: image
 image: build
-	docker build . -t rpc-proxy
+	docker build . -t rpc-aggregator
 
 .PHONY: run-docker
 run-docker: image
-	docker run -p 8080:8080 -it rpc-proxy
+	docker run -p 8080:8080 -it rpc-aggregator
 
 .PHONY: clean
 clean:

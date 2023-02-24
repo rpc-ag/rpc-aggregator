@@ -1,4 +1,4 @@
-module github.com/rpc-ag/rpc-proxy
+module github.com/rpc-ag/rpc-aggregator
 
 go 1.19
 
@@ -8,7 +8,7 @@ require (
 	github.com/tufanbarisyildirim/balancer v0.0.0-20210119075553-fcd5ab4b0ff3
 	github.com/valyala/fasthttp v1.44.0
 	go.uber.org/zap v1.24.0
-	golang.org/x/time v0.1.0
+	golang.org/x/time v0.3.0
 )
 
 require (
