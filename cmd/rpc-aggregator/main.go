@@ -7,8 +7,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/rpc-ag/rpc-proxy/internal/config"
-	"github.com/rpc-ag/rpc-proxy/internal/webserver"
+	"github.com/rpc-ag/rpc-aggregator/internal/config"
+	"github.com/rpc-ag/rpc-aggregator/internal/webserver"
 	"go.uber.org/zap"
 )
 
@@ -42,7 +42,7 @@ func main() {
 		logger.Panic("failed to start webserver", zap.Error(err))
 	}
 
-	logger.Info("Starting RPC proxy...")
+	logger.Info("Starting RPC Aggregator...")
 
 	go func() {
 		er := server.Run()
@@ -59,7 +59,7 @@ func main() {
 	<-interrupt
 
 	// Gracefully shutdown server
-	logger.Info("Shutting down RPC proxy...")
+	logger.Info("Shutting down RPC Aggregator...")
 	if err := server.Close(); err != nil {
 		logger.Error("Error shutting down server")
 	}

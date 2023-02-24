@@ -4,7 +4,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/rpc-ag/rpc-proxy/internal/config"
+	"github.com/rpc-ag/rpc-aggregator/internal/config"
 	"github.com/tufanbarisyildirim/balancer"
 	"github.com/valyala/fasthttp"
 	"golang.org/x/time/rate"

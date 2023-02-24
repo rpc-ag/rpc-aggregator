@@ -1,6 +1,6 @@
-# RPC Proxy
+# RPC Aggregator
 
-Welcome to rpc.ag, the blockchain proxy tool for DApps! It simplifies node provider integration
+Welcome to rpc.ag, the rpc aggregator tool for DApps! It simplifies node provider integration
 by balancing requests across multiple providers through a single endpoint. rpc.ag also enhances observability, improving
 the overall management and efficiency of your DApp infrastructure. Empower the community with better control and
 observability by using rpc.ag as the homepage of DApp blockchain infrastructure. Big brothers started watching node
@@ -8,20 +8,20 @@ providers.
 
 ## Architecture
 
-The architecture of the RPC proxy with load balancing is shown in the following flowchart:
+The architecture of the RPC aggregator with load balancing is shown in the following flowchart:
 
 ```mermaid
 flowchart LR 
-    CC(CLI) --> RPCProxy
-    RC(Rest) --> RPCProxy
-    RPCC(RPC) --> RPCProxy
-    WSC(WS) --> RPCProxy
-    subgraph RPC Proxy
-      RPCProxy(Handler) --> Balancer
+    CC(CLI) --> RPCAggregator
+    RC(Rest) --> RPCAggregator
+    RPCC(RPC) --> RPCAggregator
+    WSC(WS) --> RPCAggregator
+    subgraph RPC Aggregator
+      RPCAggregator(Handler) --> Aggregator
     end
-    Balancer ---->|275ms| AS1[Provider 1] 
-    Balancer -->|100ms| AS2[Provider 2] 
-    Balancer --->|170ms| ASN[Provider N]
+    Aggregator ---->|275ms| AS1[Provider 1] 
+    Aggregator -->|100ms| AS2[Provider 2] 
+    Aggregator --->|170ms| ASN[Provider N]
 
 ```
 
@@ -47,8 +47,8 @@ flowchart LR
 
 ### Phase 1: Public Page
 
-- Build a public page on [rpc.ag](rpc.ag) that showcases the RPC proxy and its features.
-- Include information on how to use the RPC proxy.
+- Build a public page on [rpc.ag](rpc.ag) that showcases the RPC Aggregator and its features.
+- Include information on how to use the RPC Aggregator.
 - Build an uptime page for transparency and accountability.
 - Show fastest & most available node providers with uptime history
 - Show average ping time with ability of filtering by provider and region 
@@ -56,11 +56,11 @@ flowchart LR
 ### Phase 2: Prometheus Exporter and Grafana Dashboards
 
 - Build a Prometheus exporter that exposes the collected metrics in a format that can be scraped by Prometheus.
-- Create a set of Grafana dashboards that visualize the performance metrics for the RPC proxy and its providers.
+- Create a set of Grafana dashboards that visualize the performance metrics for the RPC Aggregator and its providers.
 
 ### Phase 3: Uptime Page
 
-- Develop an uptime page that displays the current status of the RPC proxy and the providers.
+- Develop an uptime page that displays the current status of the RPC Aggregator and the providers.
 - Integrate the monitoring system with the uptime page to display real-time health and performance metrics.
 - Allow users to subscribe to alerts for downtime or performance issues.
 
@@ -69,9 +69,9 @@ flowchart LR
 
 - Yes.
 
-With this roadmap, we aim to add a robust monitoring and performance tracking system to the RPC proxy, along with a
+With this roadmap, we aim to add a robust monitoring and performance tracking system to the RPC Aggregator, along with a
 Prometheus exporter, Grafana dashboards, an uptime page, and a public page. These features will provide greater
-visibility into the health and performance of the RPC proxy and its providers, and promote transparency and
+visibility into the health and performance of the RPC Aggregator and its providers, and promote transparency and
 accountability for blockchain world.
 
 ## Developers
@@ -86,7 +86,7 @@ info@rpc.ag
 
 ## Contributing
 
-If you would like to contribute to the RPC proxy with load balancing, please fork the repository and create a pull
+If you would like to contribute to the RPC Aggregator with load balancing, please fork the repository and create a pull
 request with your changes. Be sure to include unit tests and adhere to the project's coding style.
 
 > IF, the project get support (grant from any blockchain) to cover some server expenses and a bit more, we will share it

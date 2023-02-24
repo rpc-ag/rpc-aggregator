@@ -1,2 +1,6 @@
+### Test CORS
 OPTIONS http://localhost:8080/5cb686db33215c303fcc289e60eeffa2
 Origin: http://localhost:8080
+
+### Test getting node list
+GET http://localhost:8080/node_list

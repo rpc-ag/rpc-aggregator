@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/fasthttp/router"
-	"github.com/rpc-ag/rpc-proxy/internal/config"
-	"github.com/rpc-ag/rpc-proxy/internal/webserver/middleware"
-	"github.com/rpc-ag/rpc-proxy/pkg/upstream"
+	"github.com/rpc-ag/rpc-aggregator/internal/config"
+	"github.com/rpc-ag/rpc-aggregator/internal/webserver/middleware"
+	"github.com/rpc-ag/rpc-aggregator/pkg/upstream"
 	"github.com/tufanbarisyildirim/balancer"
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
@@ -65,6 +65,11 @@ func New(config *config.Config, auth *config.Auth, logger *zap.Logger) (*WebServ
 		upstream: &upstream.Upstream{Balancer: b},
 	}
 	ws.router.NotFound = ws.NotFound
+
+	//web service routers
+	ws.router.GET("/node_list", ws.NodeList)
+
+	//catch all routers
 	ws.router.OPTIONS("/{api_key}", ws.Cors)
 	ws.router.ANY("/{api_key}", ws.Proxy)
 
