@@ -11,17 +11,26 @@ The architecture of the RPC aggregator with load balancing is shown in the follo
 
 ```mermaid
 flowchart LR 
-    CC(CLI) --> RPCAggregator
-    RC(Rest) --> RPCAggregator
-    RPCC(RPC) --> RPCAggregator
-    WSC(WS) --> RPCAggregator
-    subgraph RPC Aggregator
-      RPCAggregator(Handler) --> Aggregator
+    CC(CLI) --> RPCProxy
+    RC(Rest) --> RPCProxy
+    RPCC(RPC) --> RPCProxy
+    WSC(WS) --> RPCProxy
+    subgraph RPC Proxy
+      RPCProxy(Handler) --> Routing
+        subgraph fasthttp
+         Routing --> Auth(Auth & Cors) 
+         Auth --> Balancer
+         Balancer --> Proxy
+        end
     end
-    Aggregator ---->|275ms| AS1[Provider 1] 
-    Aggregator -->|100ms| AS2[Provider 2] 
-    Aggregator --->|170ms| ASN[Provider N]
+    Proxy ---->|275ms| AS1[Provider 1] 
+    Proxy -->|100ms| AS2[Provider 2] 
+    Proxy --->|170ms| ASN[Provider N]
+
 ```
+
+if you are curious about details
+
 
 ## Short-Term TODO
 
