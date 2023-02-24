@@ -23,10 +23,10 @@ flowchart LR
          Balancer --> Proxy
         end
     end
-    Proxy ---->|275ms| AS1[Provider 1] 
-    Proxy -->|100ms| AS2[Provider 2] 
-    Proxy --->|170ms| ASN[Provider N]
-
+    Proxy -->|TCP - 275ms| AS1[Provider 1] 
+    Proxy -->|TCP - 101ms| AS2[Provider 2] 
+    Proxy -->|TCP - 100ms| AS3[Provider 3] 
+    Proxy -->|TCP - 170ms| ASN[Provider N]
 ```
 
 if you are curious about details
