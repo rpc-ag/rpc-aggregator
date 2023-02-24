@@ -7,7 +7,6 @@ observability by using rpc.ag as the homepage of DApp blockchain infrastructure.
 providers.
 
 ## Architecture
-
 The architecture of the RPC aggregator with load balancing is shown in the following flowchart:
 
 ```mermaid
@@ -22,7 +21,6 @@ flowchart LR
     Aggregator ---->|275ms| AS1[Provider 1] 
     Aggregator -->|100ms| AS2[Provider 2] 
     Aggregator --->|170ms| ASN[Provider N]
-
 ```
 
 ## Short-Term TODO
@@ -60,10 +58,10 @@ flowchart LR
 
 - Develop an uptime page that displays the current status of the RPC Aggregator and the providers.
 - Integrate the monitoring system with the uptime page to display real-time health and performance metrics.
-- Allow users to subscribe to alerts for downtime or performance issues.
+- Allow users to subscribe alerts for downtime or performance issues.
 
 
-### Phase 4: Become home page of blockchain infrastructure
+### Phase 4: Become the home page of blockchain infrastructure
 
 - Yes.
 

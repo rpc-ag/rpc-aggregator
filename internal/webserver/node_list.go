@@ -3,7 +3,7 @@ package webserver
 import (
 	"encoding/json"
 
-	"github.com/rpc-ag/rpc-aggregator/pkg/upstream"
+	"github.com/rpc-ag/rpc-aggregator/internal/upstream"
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 )

@@ -6,8 +6,8 @@ import (
 
 	"github.com/fasthttp/router"
 	"github.com/rpc-ag/rpc-aggregator/internal/config"
+	upstream2 "github.com/rpc-ag/rpc-aggregator/internal/upstream"
 	"github.com/rpc-ag/rpc-aggregator/internal/webserver/middleware"
-	"github.com/rpc-ag/rpc-aggregator/pkg/upstream"
 	"github.com/tufanbarisyildirim/balancer"
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
@@ -20,7 +20,7 @@ type WebServer struct {
 	auth     *config.Auth
 	server   *fasthttp.Server
 	router   *router.Router
-	upstream *upstream.Upstream
+	upstream *upstream2.Upstream
 }
 
 type loggerAdapter struct {
@@ -48,7 +48,7 @@ func New(config *config.Config, auth *config.Auth, logger *zap.Logger) (*WebServ
 
 	b := balancer.NewBalancer()
 	for _, n := range config.Nodes {
-		node, err := upstream.NewNode(n)
+		node, err := upstream2.NewNode(n)
 		if err != nil {
 			logger.Error("error creating node", zap.Any("node", node), zap.Error(err))
 			continue
@@ -62,7 +62,7 @@ func New(config *config.Config, auth *config.Auth, logger *zap.Logger) (*WebServ
 		auth:     auth,
 		server:   server,
 		router:   r,
-		upstream: &upstream.Upstream{Balancer: b},
+		upstream: &upstream2.Upstream{Balancer: b},
 	}
 	ws.router.NotFound = ws.NotFound
 
@@ -106,7 +106,7 @@ func (s *WebServer) StartHealthChecker() {
 		<-time.After(time.Second * 10) //todo: move this to config
 		for _, n := range s.upstream.Balancer.UpstreamPool {
 			if !n.IsHealthy() { //do check only if it is not healthy
-				n.(*upstream.Node).HealthCheck()
+				n.(*upstream2.Node).HealthCheck()
 				s.logger.Info("node is back", zap.String("node-id", n.NodeID()))
 			}
 		}
