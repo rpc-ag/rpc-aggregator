@@ -50,7 +50,7 @@ func (s *WebServer) Proxy(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	err, took := node.ServeHTTP(ctx)
+	took, err := node.ServeHTTP(ctx)
 	if err != nil {
 		node.SetHealthy(false)
 

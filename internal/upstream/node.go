@@ -27,7 +27,7 @@ type Node struct {
 // ServeHTTP server http (actual proxy) through this node
 // upstreamTook is only for the upstream request, not total (body reading & writing back to the client etc)
 // it can be misleading when you got an error, so, count success only for accurate latency
-func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) (err error, upstreamTook time.Duration) {
+func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) (upstreamTook time.Duration, err error) {
 	r := fasthttp.AcquireRequest()
 	ctx.Request.CopyTo(r)
 	r.SetRequestURI(n.Endpoint)
@@ -37,9 +37,9 @@ func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) (err error, upstreamTook time
 	defer fasthttp.ReleaseRequest(r)
 	start := time.Now()
 	err = fasthttp.Do(r, resp)
-	upstreamTook = time.Now().Sub(start)
+	upstreamTook = time.Since(start)
 	if err != nil {
-		return err, upstreamTook
+		return upstreamTook, err
 	}
 
 	ctx.Response.Header.SetStatusCode(resp.StatusCode())
@@ -49,10 +49,10 @@ func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) (err error, upstreamTook time
 
 	err = resp.BodyWriteTo(ctx.Response.BodyWriter())
 	if err != nil {
-		return err, upstreamTook
+		return upstreamTook, err
 	}
 
-	return nil, upstreamTook
+	return upstreamTook, nil
 }
 
 // NewNode create new node
