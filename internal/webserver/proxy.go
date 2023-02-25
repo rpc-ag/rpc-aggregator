@@ -50,7 +50,7 @@ func (s *WebServer) Proxy(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	err = node.ServeHTTP(ctx)
+	err, took := node.ServeHTTP(ctx)
 	if err != nil {
 		node.SetHealthy(false)
 
@@ -64,6 +64,8 @@ func (s *WebServer) Proxy(ctx *fasthttp.RequestCtx) {
 		node.SetHealthy(false)
 		return
 	}
+
+	s.logger.Debug("upstream request done", zap.Duration("took", took), zap.String("provider", node.Provider), zap.String("node", node.NodeID()))
 }
 
 // Auth check authentication first
