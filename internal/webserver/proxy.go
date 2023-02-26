@@ -65,7 +65,8 @@ func (s *WebServer) Proxy(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	s.logger.Debug("upstream request done", zap.Duration("took", took), zap.String("provider", node.Provider), zap.String("node", node.NodeID()))
+	s.metrics.NodeRequests.Observe(took.Seconds())
+	//s.logger.Debug("upstream request done", zap.Duration("took", took), zap.String("provider", node.Provider), zap.String("node", node.NodeID()))
 }
 
 // Auth check authentication first

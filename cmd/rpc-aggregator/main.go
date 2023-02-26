@@ -3,10 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rpc-ag/rpc-aggregator/internal/config"
 	"github.com/rpc-ag/rpc-aggregator/internal/webserver"
 	"go.uber.org/zap"
@@ -48,6 +50,13 @@ func main() {
 		er := server.Run()
 		if er != nil {
 			panic(er)
+		}
+	}()
+
+	go func() {
+		promErr := http.ListenAndServe(":9090", promhttp.Handler())
+		if promErr != nil {
+			panic(promErr)
 		}
 	}()
 
