@@ -13,8 +13,8 @@ func NewMetrics() *Metrics {
 		NodeRequests: prometheus.NewHistogram(
 			prometheus.HistogramOpts{
 				Namespace: "provider",
-				Name:      "node_histogram",
-				Help:      "Node latency",
+				Name:      "request_duration_seconds",
+				Help:      "Node request duration",
 			}),
 	}
 }
