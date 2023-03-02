@@ -5,7 +5,20 @@ volumes:
   grafana_data: {}
 
 services:
+  aggregator:
+    container_name: aggregator
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rpc-aggregator:latest
+    ports:
+      - 8080:8080  # proxy
+      - 9000:9000  # exporter
+    command: |
+      /usr/local/bin/rpc-aggregator --config /app/config.yaml --auth /app/auth.yaml
+
   prometheus:
+    container_name: prometheus
     image: prom/prometheus
     restart: always
     volumes:
@@ -20,25 +33,8 @@ services:
       - 9090:9090
     links:
       - alertmanager:alertmanager
-
-  node-exporter:
-    image: prom/node-exporter
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command:
-      - '--path.procfs=/host/proc'
-      - '--path.sysfs=/host/sys'
-      - --collector.filesystem.ignored-mount-points
-      - '^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'
-    ports:
-      - 9100:9100
-    restart: always
-    deploy:
-      mode: global
-
   alertmanager:
+    container_name: alertmanager
     image: prom/alertmanager
     restart: always
     ports:
@@ -48,8 +44,8 @@ services:
     command:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
-
   grafana:
+    container_name: grafana
     image: grafana/grafana
     user: '472'
     restart: always
