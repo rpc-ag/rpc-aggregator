@@ -4,7 +4,6 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/prometheus/client_golang/prometheus"
 	"github.com/rpc-ag/rpc-aggregator/internal/config"
 	"github.com/rpc-ag/rpc-aggregator/internal/upstream"
 	"github.com/valyala/fasthttp"
@@ -66,12 +65,7 @@ func (s *WebServer) Proxy(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	s.metrics.NodeRequests.With(prometheus.Labels{
-		"chain":    node.Chain,
-		"provider": node.Provider,
-		"node_id":  node.NodeID(),
-	}).Observe(took.Seconds())
-	//s.logger.Debug("upstream request done", zap.Duration("took", took), zap.String("provider", node.Provider), zap.String("node", node.NodeID()))
+	s.metrics.NodeRequests.With(node.ToPromLabels()).Observe(took.Seconds())
 }
 
 // Auth check authentication first

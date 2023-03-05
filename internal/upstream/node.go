@@ -4,6 +4,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/rpc-ag/rpc-aggregator/internal/config"
 	"github.com/tufanbarisyildirim/balancer"
 	"github.com/valyala/fasthttp"
@@ -110,4 +111,13 @@ func (n *Node) SetHealthy(healthy bool) {
 func (n *Node) HealthCheck() {
 	//todo: do health check here, set SetHealthy(true) if pass
 	n.SetHealthy(true)
+}
+
+// ToPromLabels return prometheus labels for the node
+func (n *Node) ToPromLabels() prometheus.Labels {
+	return prometheus.Labels{
+		"chain":    n.Chain,
+		"provider": n.Provider,
+		"node_id":  n.NodeID(),
+	}
 }
