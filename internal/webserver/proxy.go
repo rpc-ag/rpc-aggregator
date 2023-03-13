@@ -16,7 +16,7 @@ func (s *WebServer) Proxy(ctx *fasthttp.RequestCtx) {
 	next := s.upstream.Balancer.Next("a")
 	if next == nil {
 		ctx.SetStatusCode(fasthttp.StatusBadGateway)
-		s.logger.Error("no health node")
+		s.logger.Error("no healthy node")
 		return
 	}
 	node, ok := next.(*upstream.Node)

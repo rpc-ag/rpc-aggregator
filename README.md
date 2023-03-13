@@ -46,7 +46,7 @@ if you are curious about details
 
 ### Phase 0: Release v0 ⌛️
 
-- [ ] Distribute api keys for every project attends to [grizzlython](https://solana.com/grizzlython) with ability of;
+- [x] Distribute api keys for every project attends to [grizzlython](https://solana.com/grizzlython) with ability of;
 - [x] Api key auth & CORS
 - [x] Rate limiting
 
