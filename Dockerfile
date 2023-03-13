@@ -2,33 +2,16 @@ FROM golang:latest as builder
 
 # Set the working directory
 WORKDIR /app
-
-# Copy the go.mod and go.sum files
 COPY go.mod go.sum ./
-
-# Download the dependencies
 RUN go mod download
-
-# Copy the source code
 COPY . .
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o /app/rpc-aggregator ./cmd/rpc-aggregator/main.go
 
-# Build the binary
-RUN go build -o rpc-aggregator cmd/rpc-aggregator/main.go
-
-# Use a lightweight image as the final image
 FROM alpine:latest
-
-# Set the working directory
 WORKDIR /app
-
-# Copy the binary from the builder image
-COPY --from=builder /app/rpc-aggregator .
-
-# Copy the config.yaml file
-COPY config.yaml .
-
-# Expose the port the server will listen on
+COPY --from=builder /app/rpc-aggregator /usr/local/bin/rpc-aggregator
+COPY ./_private/solana.yaml /app/config.yaml
+COPY ./_private/auth.yaml /app/auth.yaml
 EXPOSE 8080
-
-# Start the rpc-aggregator server
-CMD ["./rpc-aggregator"]
+#CMD ["/bin/sh"]
+CMD ["/usr/local/bin/rpc-aggregator","--config","/app/config.yaml","--auth","/app/auth.yaml"]

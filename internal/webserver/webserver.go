@@ -5,8 +5,10 @@ import (
 	"time"
 
 	"github.com/fasthttp/router"
+	prometheus2 "github.com/prometheus/client_golang/prometheus"
 	"github.com/rpc-ag/rpc-aggregator/internal/config"
-	upstream2 "github.com/rpc-ag/rpc-aggregator/internal/upstream"
+	"github.com/rpc-ag/rpc-aggregator/internal/prometheus"
+	"github.com/rpc-ag/rpc-aggregator/internal/upstream"
 	"github.com/rpc-ag/rpc-aggregator/internal/webserver/middleware"
 	"github.com/tufanbarisyildirim/balancer"
 	"github.com/valyala/fasthttp"
@@ -20,7 +22,8 @@ type WebServer struct {
 	auth     *config.Auth
 	server   *fasthttp.Server
 	router   *router.Router
-	upstream *upstream2.Upstream
+	upstream *upstream.Upstream
+	metrics  *prometheus.Metrics
 }
 
 type loggerAdapter struct {
@@ -48,7 +51,7 @@ func New(config *config.Config, auth *config.Auth, logger *zap.Logger) (*WebServ
 
 	b := balancer.NewBalancer()
 	for _, n := range config.Nodes {
-		node, err := upstream2.NewNode(n)
+		node, err := upstream.NewNode(n)
 		if err != nil {
 			logger.Error("error creating node", zap.Any("node", node), zap.Error(err))
 			continue
@@ -62,8 +65,10 @@ func New(config *config.Config, auth *config.Auth, logger *zap.Logger) (*WebServ
 		auth:     auth,
 		server:   server,
 		router:   r,
-		upstream: &upstream2.Upstream{Balancer: b},
+		upstream: &upstream.Upstream{Balancer: b},
+		metrics:  prometheus.NewMetrics(),
 	}
+	prometheus2.MustRegister(ws.metrics.NodeRequests)
 	ws.router.NotFound = ws.NotFound
 
 	//web service routers
@@ -106,7 +111,7 @@ func (s *WebServer) StartHealthChecker() {
 		<-time.After(time.Second * 10) //todo: move this to config
 		for _, n := range s.upstream.Balancer.UpstreamPool {
 			if !n.IsHealthy() { //do check only if it is not healthy
-				n.(*upstream2.Node).HealthCheck()
+				n.(*upstream.Node).HealthCheck()
 				s.logger.Info("node is back", zap.String("node-id", n.NodeID()))
 			}
 		}

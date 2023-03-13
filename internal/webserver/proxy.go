@@ -16,7 +16,7 @@ func (s *WebServer) Proxy(ctx *fasthttp.RequestCtx) {
 	next := s.upstream.Balancer.Next("a")
 	if next == nil {
 		ctx.SetStatusCode(fasthttp.StatusBadGateway)
-		s.logger.Error("no health node")
+		s.logger.Error("no healthy node")
 		return
 	}
 	node, ok := next.(*upstream.Node)
@@ -50,7 +50,7 @@ func (s *WebServer) Proxy(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	err = node.ServeHTTP(ctx)
+	took, err := node.ServeHTTP(ctx)
 	if err != nil {
 		node.SetHealthy(false)
 
@@ -64,6 +64,8 @@ func (s *WebServer) Proxy(ctx *fasthttp.RequestCtx) {
 		node.SetHealthy(false)
 		return
 	}
+
+	s.metrics.NodeRequests.With(node.ToPromLabels()).Observe(took.Seconds())
 }
 
 // Auth check authentication first

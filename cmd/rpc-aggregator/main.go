@@ -3,10 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rpc-ag/rpc-aggregator/internal/config"
 	"github.com/rpc-ag/rpc-aggregator/internal/webserver"
 	"go.uber.org/zap"
@@ -40,6 +42,7 @@ func main() {
 	server, err := webserver.New(conf, auth, logger)
 	if err != nil {
 		logger.Panic("failed to start webserver", zap.Error(err))
+		return
 	}
 
 	logger.Info("Starting RPC Aggregator...")
@@ -47,7 +50,15 @@ func main() {
 	go func() {
 		er := server.Run()
 		if er != nil {
-			panic(er)
+			logger.Panic("failed to start server", zap.Error(er))
+		}
+	}()
+
+	go func() {
+		//move the port to the config
+		promErr := http.ListenAndServe(":9000", promhttp.Handler())
+		if promErr != nil {
+			logger.Panic("failed to start prim server", zap.Error(promErr))
 		}
 	}()
 

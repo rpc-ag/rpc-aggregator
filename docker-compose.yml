@@ -1,0 +1,62 @@
+version: '3.8'
+
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+
+services:
+  aggregator:
+    container_name: aggregator
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rpc-aggregator:latest
+    ports:
+      - 8080:8080  # proxy
+      - 9000:9000  # exporter
+    command: |
+      /usr/local/bin/rpc-aggregator --config /app/config.yaml --auth /app/auth.yaml
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    restart: always
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+    links:
+      - alertmanager:alertmanager
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager
+    restart: always
+    ports:
+      - 9093:9093
+    volumes:
+      - ./monitoring/alertmanager/:/etc/alertmanager/
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    user: '472'
+    restart: always
+    environment:
+      GF_INSTALL_PLUGINS: 'grafana-clock-panel,grafana-simple-json-datasource'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning/:/etc/grafana/provisioning/
+    env_file:
+      - ./monitoring/grafana/config.monitoring
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus

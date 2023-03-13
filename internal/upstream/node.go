@@ -4,6 +4,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/rpc-ag/rpc-aggregator/internal/config"
 	"github.com/tufanbarisyildirim/balancer"
 	"github.com/valyala/fasthttp"
@@ -25,7 +26,9 @@ type Node struct {
 }
 
 // ServeHTTP server http (actual proxy) through this node
-func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) error {
+// upstreamTook is only for the upstream request, not total (body reading & writing back to the client etc)
+// it can be misleading when you got an error, so, count success only for accurate latency
+func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) (upstreamTook time.Duration, err error) {
 	r := fasthttp.AcquireRequest()
 	ctx.Request.CopyTo(r)
 	r.SetRequestURI(n.Endpoint)
@@ -33,10 +36,11 @@ func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) error {
 	resp := fasthttp.AcquireResponse()
 	defer fasthttp.ReleaseResponse(resp) // <- do not forget to release
 	defer fasthttp.ReleaseRequest(r)
-	err := fasthttp.Do(r, resp)
-
+	start := time.Now()
+	err = fasthttp.Do(r, resp)
+	upstreamTook = time.Since(start)
 	if err != nil {
-		return err
+		return upstreamTook, err
 	}
 
 	ctx.Response.Header.SetStatusCode(resp.StatusCode())
@@ -46,10 +50,10 @@ func (n *Node) ServeHTTP(ctx *fasthttp.RequestCtx) error {
 
 	err = resp.BodyWriteTo(ctx.Response.BodyWriter())
 	if err != nil {
-		return err
+		return upstreamTook, err
 	}
 
-	return nil
+	return upstreamTook, nil
 }
 
 // NewNode create new node
@@ -107,4 +111,13 @@ func (n *Node) SetHealthy(healthy bool) {
 func (n *Node) HealthCheck() {
 	//todo: do health check here, set SetHealthy(true) if pass
 	n.SetHealthy(true)
+}
+
+// ToPromLabels return prometheus labels for the node
+func (n *Node) ToPromLabels() prometheus.Labels {
+	return prometheus.Labels{
+		"chain":    n.Chain,
+		"provider": n.Provider,
+		"node_id":  n.NodeID(),
+	}
 }
