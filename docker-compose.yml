@@ -1,8 +1,8 @@
 version: '3.8'
 
 volumes:
-  prometheus_data: {}
-  grafana_data: {}
+  prometheus_data: { }
+  grafana_data: { }
 
 services:
   aggregator:

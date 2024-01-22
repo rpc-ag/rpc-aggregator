@@ -5,7 +5,7 @@ global:
 alerting:
   alertmanagers:
     - static_configs:
-        - targets: []
+        - targets: [ ]
       scheme: http
       timeout: 10s
       api_version: v1
@@ -17,4 +17,4 @@ scrape_configs:
     metrics_path: /metrics
     scheme: http
     static_configs:
-      - targets: ['aggregator:9000']
+      - targets: [ 'aggregator:9000' ]
